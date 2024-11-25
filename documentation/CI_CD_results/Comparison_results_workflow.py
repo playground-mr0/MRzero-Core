@@ -28,7 +28,7 @@ for filename in os.listdir(folder_Ground_Truth):
 
         diff_i = np.array_equal(vectorGroundTruth, vectorLastPush)
 
-        print("For signal " + file_name + " = " + diff_i)
+        print("For signal " + filename + " = " + diff_i)
 
         diff_total = diff_total & diff_i
 
