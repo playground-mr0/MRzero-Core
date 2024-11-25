@@ -38,6 +38,13 @@ jobs:
         #jupyter nbconvert --to notebook --execute --ExecutePreprocessor.cwd=./documentation/CI_CD_results/signals_CICD_last_run ./documentation/playground_mr0/mr0_FID_seq.ipynb --output executed_notebook.ipynb --output-dir ./documentation/CI_CD_results/executed_notebooks_CICD_last_run
         cd ./documentation/CI_CD_results/signals_CICD_last_run && jupyter nbconvert --to notebook --execute ../../playground_mr0/mr0_FID_seq.ipynb --output executed_notebook.ipynb --output-dir ../executed_notebooks_CICD_last_run
 
+    # Step n: search for generated files
+    - name: Search for generated files
+      run: |
+        echo "Searching for generated files..."
+        find . -type f \( -name "*.txt" -o -name "*.npz" -o -name "*.ipynb" \) -exec ls -lh {} \;
+
+
     # Step 6: show what files are going to be deleted
     - name: Delete aux files
       run: |
