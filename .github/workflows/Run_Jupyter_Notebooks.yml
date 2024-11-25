@@ -83,4 +83,4 @@ jobs:
     
     - name: Run specific test
       run: |
-          pytest -s ./documentation/CI_CD_results/Comparison_results_workflow.py
+          pytest -q -s ./documentation/CI_CD_results/Comparison_results_workflow.py
