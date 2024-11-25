@@ -44,9 +44,9 @@ jobs:
         find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.npz" ! -name "README" -exec echo "Would delete: {}" \;
         
     # Step 7: Delete all auxiliary files
-    - name: Delete aux files
-      run: |
-        find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.npz" ! -name "README" -exec rm -f {} \;
+    #- name: Delete aux files
+    #  run: |
+    #    find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.npz" ! -name "README" -exec rm -f {} \;
         
     # ==================================================
     #                  PUSH CHANGES
