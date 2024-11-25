@@ -1,0 +1,6 @@
+jupyter
+numpy
+matplotlib
+MRzeroCore
+pypulseq
+pytest

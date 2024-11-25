@@ -1,0 +1,79 @@
+name: Run Jupyter Notebook
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  execute-notebook:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r ./.github/workflows/requirements.txt
+
+    # Step 4: Execute the Jupyter notebook
+    - name: Execute notebook
+      run: |
+        jupyter nbconvert --to notebook --execute ./my_notebooks/your_notebook.ipynb --output executed_notebook.ipynb --output-dir ./CI_CD_results/executed_notebooks_CICD_last_run
+
+    # Step 5: Move npz signal file to CI/CD results
+    - name: Move result files
+      run: |
+        find ./my_notebooks -type f -name "*.npz" -exec mv {} ./CI_CD_results/signals_CICD_last_run/ \;
+
+    # Step 6: show what files are going to be deleted
+    - name: Delete aux files
+      run: |
+        find ./my_notebooks -maxdepth 1 -type f ! -name "*.ipynb" ! -path "./my_notebooks/signals/*" -exec echo "Would delete: {}" \;
+        
+    # Step 7: Delete all auxiliary files
+    - name: Delete aux files
+      run: |
+        find ./my_notebooks -maxdepth 1 -type f ! -name "*.ipynb" ! -path "./my_notebooks/signals/*" -exec rm -f {} \;
+        
+    # ==================================================
+    #                  PUSH CHANGES
+    # ==================================================
+    - name: Push changes
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Accessing the secret
+      run: |
+          git config --local user.email "magdamduarte@gmail.com"
+          git config --local user.name "mduarte"
+          git add .
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "There are changes to commit."
+            git commit -m "Automated commit"
+            git push origin $GITHUB_REF
+          else
+            echo "No changes to commit."
+          fi
+
+    # ==================================================
+    #      COMPARISON GROUND TRUTH - LAST PUSH
+    # ==================================================
+    
+    - name: Run specific test
+      run: |
+          pytest ./CI_CD_results/Comparison_results_workflow.py
