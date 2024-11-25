@@ -37,20 +37,15 @@ jobs:
       run: |
         jupyter nbconvert --to notebook --execute --ExecutePreprocessor.cwd=./documentation/CI_CD_results/signals_CICD_last_run ./documentation/playground_mr0/mr0_FID_seq.ipynb --output executed_notebook.ipynb --output-dir ./documentation/CI_CD_results/executed_notebooks_CICD_last_run
 
-    # Step 5: Move npz signal file to CI/CD results
-    #- name: Move result files
-    #  run: |
-    #    find ./my_notebooks -type f -name "*.npz" -exec mv {} ./CI_CD_results/signals_CICD_last_run/ \;
-
     # Step 6: show what files are going to be deleted
     - name: Delete aux files
       run: |
-        find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.npz" ! -path "./my_notebooks/signals/*" -exec echo "Would delete: {}" \;
+        find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.npz" ! -name "README" -exec echo "Would delete: {}" \;
         
     # Step 7: Delete all auxiliary files
     - name: Delete aux files
       run: |
-        find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.ipynb" ! -path "./my_notebooks/signals/*" -exec rm -f {} \;
+        find ./documentation/CI_CD_results/signals_CICD_last_run -maxdepth 1 -type f ! -name "*.npz" ! -name "README" -exec rm -f {} \;
         
     # ==================================================
     #                  PUSH CHANGES
