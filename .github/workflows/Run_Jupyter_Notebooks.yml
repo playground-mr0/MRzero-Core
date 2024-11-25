@@ -35,7 +35,7 @@ jobs:
     # Step 4: Execute the Jupyter notebook
     - name: Execute notebook
       run: |
-        jupyter nbconvert --to notebook --execute --ExecutePreprocessor.cwd=./documentation/CI_CD_results/signals_CICD_last_run ./documentation/playground_mr0/mr0_FID_seq.ipynb --output executed_notebook.ipynb --output-dir ./CI_CD_results/executed_notebooks_CICD_last_run
+        jupyter nbconvert --to notebook --execute --ExecutePreprocessor.cwd=./documentation/CI_CD_results/signals_CICD_last_run ./documentation/playground_mr0/mr0_FID_seq.ipynb --output executed_notebook.ipynb --output-dir ./documentation/CI_CD_results/executed_notebooks_CICD_last_run
 
     # Step 5: Move npz signal file to CI/CD results
     #- name: Move result files
