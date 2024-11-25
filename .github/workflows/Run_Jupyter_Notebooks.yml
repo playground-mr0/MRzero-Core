@@ -81,6 +81,6 @@ jobs:
     #      COMPARISON GROUND TRUTH - LAST PUSH
     # ==================================================
     
-    #- name: Run specific test
-    #  run: |
-    #      pytest ./CI_CD_results/Comparison_results_workflow.py
+    - name: Run specific test
+      run: |
+          pytest ./documentation/CI_CD_results/Comparison_results_workflow.py
