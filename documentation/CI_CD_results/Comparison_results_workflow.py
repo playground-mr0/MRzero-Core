@@ -11,10 +11,31 @@ import os
 folder_Ground_Truth = "./documentation/CI_CD_results/signals_GroundTruth"
 folder_Last_Push = "./documentation/CI_CD_results/signals_CICD_last_run"
 
+diff_total = True
+
 for filename in os.listdir(folder_Ground_Truth):
     if filename.endswith('.npz'):
-        file_path = os.path.join(directory, filename)
+        file_path = os.path.join(folder_Ground_Truth, filename)
         print(f'Processing file: {file_path}')
+
+        file_path_last_run = os.path.join(folder_Last_Push, filename)
+
+        vectorGroundTruth = np.load(file_path)
+        vectorLastPush = np.load(file_path_last_run)   
+
+        vectorGroundTruth = vectorGroundTruth['signal'].astype(np.complex64)
+        vectorLastPush = vectorLastPush['signal'].astype(np.complex64)
+
+        diff_i = np.array_equal(vectorGroundTruth, vectorLastPush)
+
+        print("For signal " + file_name + " = " + diff_i)
+
+        diff_total = diff_total & diff_i
+
+class TestPythonScript:
+
+    def test_compare_PlaygroundMR0_results(self):
+        assert diff_total        
 
 '''
 vectorGroundTruth = np.load("./documentation/CI_CD_results/signals_GroundTruth/FID_signal.npz")
